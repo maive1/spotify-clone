@@ -1,0 +1,84 @@
+---
+import MusicList from '@/components/MusicList.astro';
+import Layout from '../../layouts/Layout.astro';
+
+import type { Playlist, Song } from '@/lib/data';
+import { getPlaylistData } from '@/server/getPlaylistData';
+import { getTotalDuration } from '@/helpers/song-controls';
+import { CardPlayButton } from '@/components/CardPlayButton';
+const { id } = Astro.params;
+
+let playlist: Playlist | null;
+let songs: Song[];
+
+try {
+  if (!id) throw new Error('No id provided');
+  const data = await getPlaylistData(id);
+  playlist = data.playlist;
+  songs = data.songs;
+} catch (error) {
+  console.error(error);
+  songs = [];
+  playlist = null;
+}
+
+const {
+  cover,
+  title,
+  creator = 'vero',
+  id: playlistId,
+  artists,
+} = playlist || {};
+
+const totalSongs = songs.length;
+
+const duration = getTotalDuration(songs);
+---
+
+<Layout title='Spotify Clone'>
+  <div
+    id='playlist-container'
+    class='relative flex flex-col h-full bg-zinc-900 overflow-x-hidden'
+    transition:name=`playlist ${id} box`
+  >
+    <header class='flex flex-row gap-8 px-6 mt-12'>
+      <picture class='aspect-square w-52 h-52 flex-none'>
+        <img
+          src={cover}
+          alt={`Cover of ${title} by ${creator}`}
+          class='object cover w-full h-full shadow-lg'
+          transition:name=`playlist ${playlistId} image`
+        />
+      </picture>
+      <div class='flex flex-col justify-between'>
+        <h2 class='flex flex-1'>Playlist</h2>
+        <div>
+          <h1 class='text-7xl font-bold block text-white'>
+            {title}
+          </h1>
+          <span transition:name=`playlist ${playlistId} title`></span>
+        </div>
+        <div class='flex-1 flex'>
+          <div class='text-sm text-gray-300 font-normal'>
+            <div transition:name=`playlist ${playlistId} artists`>
+              <span class='font-bold'>{artists?.join(', ')}</span>
+            </div>
+            <p class='mt-1'>
+              <span class='text-white'>{totalSongs} canciones</span>, {duration}
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class='pl-6 pt-6'>
+      <CardPlayButton size='large' id={id} client:load />
+    </div>
+    <div class='relative z-10 px-6 pt-10'>
+      <MusicList songs={songs} />
+    </div>
+    <div
+      class='absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/80 -z-10'
+    >
+    </div>
+  </div>
+</Layout>

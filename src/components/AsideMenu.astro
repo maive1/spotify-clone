@@ -1,0 +1,54 @@
+---
+import LibraryIcon from '@/icons/Library.astro';
+import HomeIcon from '@/icons/Home.astro';
+import SearchIcon from '@/icons/Search.astro';
+import SideMenuItem from './SideMenuItem.astro';
+import { playlists } from '@/lib/data';
+import SideMenuCard from './SideMenuCard.astro';
+---
+
+<nav class='flex flex-col gap-2 h-full'>
+  <div class='bg-zinc-900 rounded-lg p-2 flex-none'>
+    <ul>
+      <SideMenuItem href='/'><HomeIcon /> Home</SideMenuItem>
+      <SideMenuItem href='/#'><SearchIcon /> Search</SideMenuItem>
+    </ul>
+  </div>
+  <!-- 
+  <div class='bg-zinc-900 rounded-lg p-2 flex flex-col flex-1 overflow-hidden'>
+    <ul class='flex flex-col flex-1'>
+      <SideMenuItem href='/library'
+        ><LibraryIcon />
+        Your Library
+      </SideMenuItem>
+      <div class='flex flex-1 flex-col overflow-y-auto'>
+        {
+          playlists.map((playlist) => (
+            <SideMenuCard playlist={playlist}>
+              {playlist.cover}
+              {playlist.title}
+            </SideMenuCard>
+          ))
+        }
+      </div>
+    </ul>
+  </div> -->
+
+  <div
+    class='bg-zinc-900 rounded-lg p-2 flex flex-col flex-1 overflow-auto scrollbar-thin scrollbar-webkit'
+  >
+    <SideMenuItem href='/library'><LibraryIcon />Your Library</SideMenuItem>
+    <div class='flex-1 overflow-y-auto'>
+      <ul class='flex flex-col'>
+        {
+          playlists.map(playlist => (
+            <SideMenuCard playlist={playlist}>
+              {playlist.cover}
+              {playlist.title}
+            </SideMenuCard>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
