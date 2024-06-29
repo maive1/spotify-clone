@@ -27,13 +27,13 @@ This is a personal practice project where I created a basic Spotify clone using 
 3. Install the dependencies:
 
    ```sh
-   npm install
+   yarn install
    ```
 
 4. Start the development server:
 
    ```sh
-   npm run dev
+   yarn astro dev
    ```
 
 ## Usage
