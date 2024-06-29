@@ -15,7 +15,7 @@ This is a personal practice project where I created a basic Spotify clone using 
 1. Clone this repository:
 
    ```sh
-   git clone https://github.com/your-username/spotify-clone.git
+   git clone https://github.com/maive1/spotify-clone.git
    ```
 
 2. Navigate to the project directory:
